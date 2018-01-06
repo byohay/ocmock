@@ -27,6 +27,7 @@
 {
 	BOOL			isNice;
 	BOOL			expectationOrderMatters;
+  BOOL      didStopMocking;
 	NSMutableArray	*stubs;
 	NSMutableArray	*expectations;
 	NSMutableArray	*exceptions;

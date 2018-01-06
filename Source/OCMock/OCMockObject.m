@@ -145,7 +145,11 @@
 
 - (void)stopMocking
 {
-    // no-op for mock objects that are not class object or partial mocks
+  @synchronized(invocations) {
+      [invocations release];
+      invocations = nil;
+      didStopMocking = YES;
+  }
 }
 
 
@@ -322,6 +326,10 @@
 {
     @synchronized(invocations)
     {
+        if (didStopMocking) {
+            return NO;
+        }
+
         // We can't do a normal retain arguments on anInvocation because its target/arguments/return
         // value could be self. That would produce a retain cycle self->invocations->anInvocation->self.
         // However we need to retain everything on anInvocation that isn't self because we expect them to
